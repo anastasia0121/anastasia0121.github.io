@@ -1,4 +1,4 @@
-var array = ['text1', 'text2', 'text3'];
+var array = [];
 var i = 0;
 
 /**
@@ -10,7 +10,9 @@ function next_quote()
         i = 0;
     }
 
-    return array[i++];
+    var tmp = array[i++];
+
+    return tmp.quoteText + " - " + tmp.quoteAuthor;
 }
 
 /**
@@ -50,6 +52,7 @@ function add_quote()
  */
 window.onload = function()
 {
+    parse_json();
     change_quote(); 
 }
 
@@ -101,5 +104,5 @@ function parse_json()
     var request = new XMLHttpRequest();
     request.open("GET", "https://raw.githubusercontent.com/4skinSkywalker/Database-Quotes-JSON/master/quotes.json", false);
     request.send(null)
-    var my_json = JSON.parse(request.responseText);
+    array= JSON.parse(request.responseText);
 }
