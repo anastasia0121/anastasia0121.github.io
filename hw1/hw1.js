@@ -1,18 +1,31 @@
 var array = [];
+var quotes = {};
 var i = 0;
+var author = "";
 
 /**
  * get next quote, increace counter
  */
 function next_quote()
 {
-    if (i >= array.length) {
+    var tmp;
+
+    if (author == "") {
+        if (i >= array.length) {
+            i = 0;
+        }
+        var tmp = array[i++];
+
+        return tmp.quoteText + " - " + (tmp.quoteAuthor == "" ? "Unknown" : tmp.quoteAuthor);
+    }
+
+    let arr = Array.from(quotes[author])
+
+    if (i >= arr.length) {
         i = 0;
     }
 
-    var tmp = array[i++];
-
-    return tmp.quoteText + " - " + tmp.quoteAuthor;
+    return arr[i++] + " - " + author; 
 }
 
 /**
@@ -43,8 +56,6 @@ function add_quote()
     sub_div.innerHTML = next_quote();
 
     main_div.appendChild(sub_div);
-
-//    var node = document.createTextNode("This is new.");
 }
 
 /**
@@ -76,9 +87,9 @@ function sort_quotes()
 }
 
 /**
- * delete all quotes, load new
+ * delete all quotes
  */
-function reset()
+function clear()
 {
     var main_div = document.getElementById("main_div");
     var length = main_div.children.length;
@@ -88,6 +99,18 @@ function reset()
             main_div.removeChild(child);
         }
     }
+}
+
+/**
+ * delete all quotes, load new
+ */
+function reset()
+{
+    clear();
+
+    author = "";
+    select = document.getElementById('author_selector');
+    select.selectedIndex = -1;
 
     // add new quote
     add_quote();
@@ -99,10 +122,66 @@ function reset()
     return true;
 }
 
+/**
+ * load quotes from jason
+ */
 function parse_json()
 {
     var request = new XMLHttpRequest();
     request.open("GET", "https://raw.githubusercontent.com/4skinSkywalker/Database-Quotes-JSON/master/quotes.json", false);
     request.send(null)
-    array= JSON.parse(request.responseText);
+    array = JSON.parse(request.responseText);
+
+    for (var j = 0; j < array.length; ++j) {
+
+        var tmp = array[j];
+        var author = (tmp.quoteAuthor == "" ? "Unknown" : tmp.quoteAuthor);
+        var quote = tmp.quoteText;
+
+        //if (author in quotes) {
+        //    quotes[author].push(quote);
+        //} else {
+        //    quotes[author] = [quote];
+        //}
+        if (author in quotes) {
+            quotes[author].add(quote);
+        } else {
+            quotes[author] = new Set();
+            quotes[author].add(quote);
+        }
+    }
+
+    add_options();
+}
+
+/**
+ * full authors
+ */
+function add_options()
+{
+    select = document.getElementById('author_selector');
+
+    for (var key in quotes) {
+        var option = document.createElement('option');
+        // duplicate!
+        option.value = key;
+        option.innerHTML = key;
+        select.appendChild(option);
+    }
+}
+
+/**
+ * select one author
+ */
+function select_author()
+{
+    clear();
+    i = 0;
+    select = document.getElementById('author_selector');
+    author = select.options[select.selectedIndex].value; 
+    add_quote();
+
+    // enable button of the day
+    button = document.getElementById("change");
+    button.disabled = false;
 }
