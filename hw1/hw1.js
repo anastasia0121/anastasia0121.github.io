@@ -2,6 +2,7 @@ var array = [];
 var quotes = {};
 var i = 0;
 var author = "";
+var of = false;
 
 /**
  * get next quote, increace counter
@@ -23,6 +24,10 @@ function next_quote()
 
     if (i >= arr.length) {
         i = 0;
+    }
+
+    if (i + 1 == arr.length) {
+        of = true;
     }
 
     return arr[i++] + " - " + author; 
@@ -55,6 +60,10 @@ function add_quote()
     sub_div.classList.add('quote');
     sub_div.innerHTML = next_quote();
 
+    if (of) {
+        document.getElementById("add").disabled = true
+    }
+    
     main_div.appendChild(sub_div);
 }
 
@@ -64,7 +73,8 @@ function add_quote()
 window.onload = function()
 {
     parse_json();
-    change_quote(); 
+    change_quote();
+    select.selectedIndex = -1;
 }
 
 /**
@@ -116,33 +126,42 @@ function reset()
     add_quote();
 
     // enable button of the day
-    button = document.getElementById("change");
-    button.disabled = false;
-
+    document.getElementById("change").disabled = false;
+    of = false;
+    document.getElementById("add").disabled = false;
+    
     return true;
 }
+
+var mock = true;
 
 /**
  * load quotes from jason
  */
 function parse_json()
 {
-    var request = new XMLHttpRequest();
-    request.open("GET", "https://raw.githubusercontent.com/4skinSkywalker/Database-Quotes-JSON/master/quotes.json", false);
-    request.send(null)
-    array = JSON.parse(request.responseText);
-
+    if (mock) {
+        array.push({ quoteAuthor: "aut1", quoteText: "Quo1"});
+        array.push({ quoteAuthor: "aut1", quoteText: "Quo2"});
+        array.push({ quoteAuthor: "aut1", quoteText: "Quo3"});
+        array.push({ quoteAuthor: "aut2", quoteText: "Quo1"});
+        array.push({ quoteAuthor: "aut2", quoteText: "Quo2"});
+        array.push({ quoteAuthor: "aut2", quoteText: "Quo3"});
+        array.push({ quoteAuthor: "aut3", quoteText: "Quo1"});
+    }
+    else {
+        var request = new XMLHttpRequest();
+        request.open("GET", "https://raw.githubusercontent.com/4skinSkywalker/Database-Quotes-JSON/master/quotes.json", false);
+        request.send(null)
+        array = JSON.parse(request.responseText);
+    }
+        
     for (var j = 0; j < array.length; ++j) {
 
         var tmp = array[j];
         var author = (tmp.quoteAuthor == "" ? "Unknown" : tmp.quoteAuthor);
         var quote = tmp.quoteText;
 
-        //if (author in quotes) {
-        //    quotes[author].push(quote);
-        //} else {
-        //    quotes[author] = [quote];
-        //}
         if (author in quotes) {
             quotes[author].add(quote);
         } else {
@@ -179,9 +198,12 @@ function select_author()
     i = 0;
     select = document.getElementById('author_selector');
     author = select.options[select.selectedIndex].value; 
+
+    of = false;
+    document.getElementById("add").disabled = false;
+
     add_quote();
 
     // enable button of the day
-    button = document.getElementById("change");
-    button.disabled = false;
+    document.getElementById("change").disabled = false;
 }
