@@ -5,6 +5,22 @@ var author = "";
 var of = false;
 
 /**
+ * delete all quotes
+ */
+function clear()
+{
+    var main_div = document.getElementById("main_div");
+    var length = main_div.children.length;
+    for (var j = length - 1; j >= 0; --j) {
+        var child = main_div.children[j];
+        if (child.className == "quote") {
+            main_div.removeChild(child);
+        }
+    }
+}
+
+
+/**
  * get next quote, increace counter
  */
 function next_quote()
@@ -74,7 +90,7 @@ window.onload = function()
 {
     parse_json();
     change_quote();
-    select.selectedIndex = -1;
+    document.getElementById('author_selector').selectedIndex = -1;
 }
 
 /**
@@ -97,30 +113,14 @@ function sort_quotes()
 }
 
 /**
- * delete all quotes
- */
-function clear()
-{
-    var main_div = document.getElementById("main_div");
-    var length = main_div.children.length;
-    for (var j = length - 1; j >= 0; --j) {
-        var child = main_div.children[j];
-        if (child.className == "quote") {
-            main_div.removeChild(child);
-        }
-    }
-}
-
-/**
- * delete all quotes, load new
+ * Delete all quotes, load new
  */
 function reset()
 {
     clear();
 
     author = "";
-    select = document.getElementById('author_selector');
-    select.selectedIndex = -1;
+    document.getElementById('author_selector').selectedIndex = -1;
 
     // add new quote
     add_quote();
@@ -133,7 +133,7 @@ function reset()
     return true;
 }
 
-var mock = true;
+var mock = false;
 
 /**
  * load quotes from jason
@@ -182,7 +182,6 @@ function add_options()
 
     for (var key in quotes) {
         var option = document.createElement('option');
-        // duplicate!
         option.value = key;
         option.innerHTML = key;
         select.appendChild(option);
@@ -195,10 +194,12 @@ function add_options()
 function select_author()
 {
     clear();
-    i = 0;
     select = document.getElementById('author_selector');
     author = select.options[select.selectedIndex].value; 
 
+    i = 0;
+
+    // enable adding
     of = false;
     document.getElementById("add").disabled = false;
 
