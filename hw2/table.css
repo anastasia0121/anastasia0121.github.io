@@ -1,0 +1,49 @@
+tr:nth-of-type(2n) { /* even rows */
+  background-color: #c4c4c4;
+}
+tr:nth-of-type(2n+1) { /* odd rows */
+  background-color: #fff;
+}
+tr:hover { /* mouseover */
+    background-color: yellow;
+    cursor: default;
+}
+table{
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+table td, th{
+  border: 1px solid black;
+}
+caption{
+    border: 1px solid black
+}
+table th {
+    background-color: #fff
+}
+th {
+    cursor: s-resize
+}
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid black;
+  display : inline-block;
+}
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid black;
+  display : inline-block;
+}   
+range {
+
+}
+checkbox {
+}
+radio {
+}

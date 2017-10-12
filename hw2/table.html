@@ -2,40 +2,21 @@
 <html lang="en">
 <meta charset="utf-8">
 <body>
+    <link rel="stylesheet" type="text/css" href="table.css">
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script>
-
-    d3.json("countries_2012.json", function(error, data){
-    
-    var table = d3.select("body").append("table"), thead = table.append("thead").attr("class", "thead");
-    tbody = table.append("tbody");
-    table.append("caption").html("World Countries Ranking");
-
-    var desired_columns = ["name", "continent", "gdp", "life_expectancy", "population", "year"]
-    thead.append("tr")
-        .selectAll("th")
-        .data(desired_columns)
-        .enter()
-        .append("th")
-        .text(function(d) { return d; })
-        .on("click", function(header, i) { tbody.selectAll("tr").sort(function(a, b) { return d3.descending(a[header], b[header]); }); });
-
-    var rows = tbody
-        .selectAll("tr.row")
-        .data(data)
-        .enter()
-        .append("tr")
-        .attr("class", "row");
-
-    var cells = rows.selectAll("td")
-        .data(function(row) {
-            return d3.range(desired_columns.length)
-                     .map(function(column, i) { return row[desired_columns[i]];});
-        })
-        .enter()
-        .append("td")
-        .text(function(d) { return d; })
-});
-        </script> 
-    </body>
+    <script src="table.js"></script>
+    <label>Time update:</label>
+    <input type="range" name="points" min="1995" max="2012" step="1" value="0" id="slider-time" oninput=";">
+    <br>
+    <label>Filetr by:</label>
+    <label>Americas<input type="checkbox" name="Americas" value="Americas" title="Americas" onchange="alert('changed!')"></input></label>
+    <label>Africa<input type="checkbox" name="Africa" value="Africa" title="Africa" onchange="alert('changed!')"></input></label>
+    <label>Asia<input type="checkbox" name="Asia" value="Asia" title="Asia" onchange="alert('changed!')"></input></label>
+    <label>Europe<input type="checkbox" name="Europe" value="Europe" title="Europe" onchange="alert('changed!')"></input></label>
+    <label>Oceania<input type="checkbox" name="Oceania" value="Oceania" title="Oceania" onchange="alert('changed!')"></input></label>
+    <br>
+    <label>Aggregation:</label>
+    <label>None<input type="radio" name="details" value="None" onclick=""></label>
+    <label>by Countries<input type="radio" name="details" value="by Countries" onclick=""></label>
+</body>
 </html>
