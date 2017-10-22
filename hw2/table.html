@@ -6,17 +6,19 @@
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="table.js"></script>
     <label>Time update:</label>
-    <input type="range" name="points" min="1995" max="2012" step="1" value="0" id="slider-time" oninput=";">
+    1995
+    <input type="range" name="points" min="1995" max="2012" step="1" value="0" id="slider-time" oninput="" class="range">
+    2012
     <br>
     <label>Filetr by:</label>
-    <label>Americas<input type="checkbox" name="Americas" value="Americas" title="Americas" onchange="alert('changed!')"></input></label>
-    <label>Africa<input type="checkbox" name="Africa" value="Africa" title="Africa" onchange="alert('changed!')"></input></label>
-    <label>Asia<input type="checkbox" name="Asia" value="Asia" title="Asia" onchange="alert('changed!')"></input></label>
-    <label>Europe<input type="checkbox" name="Europe" value="Europe" title="Europe" onchange="alert('changed!')"></input></label>
-    <label>Oceania<input type="checkbox" name="Oceania" value="Oceania" title="Oceania" onchange="alert('changed!')"></input></label>
+    <label class="checkbox"><input type="checkbox" name="Americas" value="Americas" title="Americas">Americas</label>
+    <label class="checkbox"><input type="checkbox" name="Africa" value="Africa" title="Africa">Africa</label>
+    <label class="checkbox"><input type="checkbox" name="Asia" value="Asia" title="Asia">Asia</label>
+    <label class="checkbox"><input type="checkbox" name="Europe" value="Europe" title="Europe">Europe</label>
+    <label class="checkbox"><input type="checkbox" id="c1" class="checkbox" name="Oceania" value="Oceania" title="Oceania">Oceania</label>
     <br>
     <label>Aggregation:</label>
-    <label>None<input type="radio" name="details" value="None" onclick=""></label>
-    <label>by Countries<input type="radio" name="details" value="by Countries" onclick=""></label>
+    <label class="radio"><input type="radio" name="details" value="None">None</label>
+    <label class="radio"><input id="aggregation" type="radio" name="details" value="by Countries">by Countries</label>
 </body>
 </html>
