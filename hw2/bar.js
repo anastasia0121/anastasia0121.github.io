@@ -11,7 +11,6 @@ function drow_bar(data, encoded_by)
     var xScale = d3.scale.linear().range([0, width]);
     var yScale = d3.scale.ordinal().rangeRoundBands([0, height], .8, 0);
 
-    //var max = d3.max(data, function(d) { return d.population; } );
     var max = d3.max(data, d => d[encoded_by]);
     var min = 0;
 
@@ -48,11 +47,11 @@ function drow_bar(data, encoded_by)
         .attr("y", function(d) { return yScale(d.name); })
         .attr("fill", function(d){
             var name = d['continent'];
-            if (name == "Americas") { return "red"; }
+            if (name == "Americas") { return "orange"; }
             if (name == "Africa") { return "blue"; }
-            if (name == "Asia") { return "black"; }
-            if (name == "Europe") { return "green"; }
-            return "#42145f";
+            if (name == "Asia") { return "green"; }
+            if (name == "Europe") { return "red"; }
+            return "violet";
         })
 }
 

@@ -20,10 +20,15 @@ function drow_table(data)
                d3.selectAll("th").style("cursor", "s-resize")
                d3.select(this).append("span").attr("class", direction)
                if (direction == "arrow-up") {
-                   tbody.selectAll("tr").sort(function(a, b) { return d3.ascending(a[header], b[header]); });
+                   tbody.selectAll("tr").sort(function(a, b) {
+                       if (header == "continent") { return d3.ascending(a[header] + a['name'], b[header] + b['name']); }
+                       d3.ascending(a[header], b[header]);
+                   });
                    d3.select(this).style("cursor", "n-resize")
                } else {
-                   tbody.selectAll("tr").sort(function(a, b) { return d3.descending(a[header], b[header]); });
+                   tbody.selectAll("tr").sort(function(a, b) {
+                       if (header == "continent") { return d3.descending(a[header] + a['name'], b[header] + b['name']); }
+                       return d3.descending(a[header], b[header]); });
                }
            })
 
@@ -57,8 +62,26 @@ function drow_table(data)
         .text(function(d) { return d; })
 }
 
-d3.json("countries_2012.json", function(error, data)
+d3.json("countries_1995_2012.json", function(error, data)
 {
+    var tmp = [];
+
+    // convert to sipliest format
+    for (var i = 0; i < data.length; ++i) {
+        for (var j = 0; j < data[i]['years'].length; ++j) {
+            obj = {
+                'name': data[i]['name'],
+                'continent': data[i]['continent'],
+                'gdp': data[i]['years'][j]['gdp'],
+                'life_expectancy': data[i]['years'][j]['life_expectancy'],
+                'population': data[i]['years'][j]['population'],
+                'year': data[i]['years'][j]['year']
+            }
+            tmp.push(obj);
+        }
+    }
+    data = tmp;            
+            
     var choices = [];
     
     d3.selectAll('input[type=checkbox]').on("change", update_all);
@@ -115,6 +138,6 @@ d3.json("countries_2012.json", function(error, data)
         drow_table(new_data)
     }   
 
-    drow_table(data);
+    update_all();
     
 });
