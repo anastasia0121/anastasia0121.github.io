@@ -71,7 +71,7 @@ th {
     background-color: #77a4ff;
     content: "⚫";
     text-align: center;
-    line-height: 15px;
+    line-height: 13px;
     color: #fff;
 }
 input[type=range] {
