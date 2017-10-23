@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<body>
+    <link rel="stylesheet" type="text/css" href="bar.css">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="bar.js"></script>
+    <label>Time update:</label>
+    1995
+    <input type="range" name="points" min="1995" max="2012" step="1" value="0" id="slider-time" oninput="" class="range">
+    2012
+    <br>
+    <label>Encode bars by:</label>
+    <label class="radio"><input checked="true" class="encoder" name="bars-encode" type="radio" value="population" onclick="">Population</label>
+    <label class="radio"><input  class="encoder" name="bars-encode" type="radio"  value="gdp" onclick="">GDP</label>
+    <br>
+    <label>Filetr by:</label>
+    <label class="checkbox"><input type="checkbox" name="Americas" value="Americas" title="Americas">Americas</label>
+    <label class="checkbox"><input type="checkbox" name="Africa" value="Africa" title="Africa">Africa</label>
+    <label class="checkbox"><input type="checkbox" name="Asia" value="Asia" title="Asia">Asia</label>
+    <label class="checkbox"><input type="checkbox" name="Europe" value="Europe" title="Europe">Europe</label>
+    <label class="checkbox"><input type="checkbox" class="checkbox" name="Oceania" value="Oceania" title="Oceania">Oceania</label>
+    <br>
+    <label>Aggregate by:</label>
+    <label class="radio"><input type="radio" name="details" value="None" class="aggregation" checked="true">None</label>
+    <label class="radio"><input type="radio" id="aggregation" name="details" value="by Continents" class="aggregation">by Continents</label>
+    <br>
+    <label>Sort by:</label>
+    <label class="radio"><input class="sort" name="sort" type="radio"  value="population" checked="true">Population</label>
+    <label class="radio"><input class="sort" name="sort" type="radio" value="gdp">GDP</label>
+</body>
+</html>
