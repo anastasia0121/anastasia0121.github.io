@@ -20,8 +20,9 @@ class InfoPanel {
         // Hint: For the list of teams, you can create an list element for each team.
         // Hint: Select the appropriate ids to update the text content.
 
-        //Set Labels
+        // Set Labels
 
+        console.log(oneWorldCup)
     }
 
 }

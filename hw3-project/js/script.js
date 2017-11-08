@@ -46,5 +46,6 @@ function chooseData() {
     // ******* TODO: PART I *******
     // Changed the selected data when a user selects a different
     // menu item from the drop down.
-
+    var selected = d3.select("#dataset").property("value");
+    barChart.updateBarChart(selected);
 }
