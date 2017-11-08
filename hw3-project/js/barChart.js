@@ -92,8 +92,12 @@ class BarChart {
                 g.select(`rect:nth-child(${this.selectedIndex + 1})`).classed('selected', true);
 
                 // update panel and map
-                this.infoPanel && this.infoPanel.updateInfo(this.selectedModel);
-                this.worldMap && this.worldMap.updateMap(this.selectedModel);
+                if (this.infoPanel) {
+                    this.infoPanel.updateInfo(this.selectedModel);
+                }
+                if (this.worldMap) {
+                    this.worldMap.updateMap(this.selectedModel);
+                }
             })
             .exit()
             .remove();
