@@ -80,7 +80,7 @@ class BarChart {
             .attr("width", x.bandwidth())
             .attr("height", function (d) { return height - y(d[selectedDimension]); })
             .attr("y", function (d) { return y(d[selectedDimension]); })
-            .on('click', (d, id) => {
+            .on("click", (d, id) => {
                 // remove old color
                 if (this.selectedIndex !== null)
                 { g.select(`rect:nth-child(${this.selectedIndex + 1})`).classed('selected', false); }

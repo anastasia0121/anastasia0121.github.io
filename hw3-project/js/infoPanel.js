@@ -4,12 +4,16 @@ class InfoPanel {
      * Creates a infoPanel Object
      */
     constructor() {
+        this.host = d3.select("#host");
+        this.winner = d3.select("#winner");
+        this.silver = d3.select("#silver");
+        this.teams = d3.select("#teams");
     }
 
     clear() {
-        d3.select('#host').text("");
-        d3.select('#winner').text("");
-        d3.select('#silver').text("");
+        this.host.text("");
+        this.winner.text("");
+        this.silver.text("");
         d3.selectAll(".team").remove()
     }
     
@@ -32,18 +36,17 @@ class InfoPanel {
             return;
         }
         
-        d3.select('#host').text(oneWorldCup.host);
-        d3.select('#winner').text(oneWorldCup.winner);
-        d3.select('#silver').text(oneWorldCup.runner_up);
+        this.host.text(oneWorldCup.host);
+        this.winner.text(oneWorldCup.winner);
+        this.silver.text(oneWorldCup.runner_up);
 
-        d3.selectAll(".team").remove()
+        d3.selectAll(".li").remove()
 
-        d3.select("#teams")
-            .selectAll("li")
+        this.teams.selectAll("li")
             .data(oneWorldCup.teams_names)
             .enter()
             .append("li")
-            .attr("class", "team")
+            .attr("class", "li")
             .text(d=>d)
     }
 }
