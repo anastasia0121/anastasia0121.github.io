@@ -6,14 +6,14 @@ class Table {
     constructor(teamData, treeObject) {
 
         //Maintain reference to the tree Object; 
-        this.tree = null; 
+        this.tree = treeObject; 
 
         // Create list of all elements that will populate the table
         // Initially, the tableElements will be identical to the teamData
-        this.tableElements = null; // 
+        this.tableElements = teamData.slice(); // 
 
         ///** Store all match data for the 2014 Fifa cup */
-        this.teamData = null;
+        this.teamData = teamData;
 
         //Default values for the Table Headers
         this.tableHeaders = ["Delta Goals", "Result", "Wins", "Losses", "TotalGames"];
@@ -56,20 +56,31 @@ class Table {
     createTable() {
 
         // ******* TODO: PART II *******
-
-        //Update Scale Domains
-
+        // Update Scale Domains
         // Create the x axes for the goalScale.
-
-        //add GoalAxis to header of col 1.
+        // add GoalAxis to header of col 1.
 
         // ******* TODO: PART V *******
-
         // Set sorting callback for clicking on headers
-
         // Clicking on headers should also trigger collapseList() and updateTable(). 
 
-       
+        var width = 130
+        var height = 20
+        var max = d3.max(this.teamData, d => d.value["Goals Made"]);
+
+        var x_scale = d3.scaleLinear().domain([0, max]).range([0, width]).nice()
+        var x_axis = d3.axisTop().tickValues(d3.range(0, max + 1, 2)).scale(x_scale);
+        this.goalScale = x_scale;
+        
+        d3.select("#goalHeader")
+            .append("svg")
+            .attr("height", height + 5)
+            .attr("width", width + 20)
+            .append("g")
+            .attr("transform", "translate(10, 20)")
+            .attr("width", width)
+            .attr("height", height)
+            .call(x_axis)
     }
 
 
@@ -79,20 +90,15 @@ class Table {
     updateTable() {
         // ******* TODO: PART III *******
         //Create table rows
-
         //Append th elements for the Team Names
-
         //Append td elements for the remaining columns. 
         //Data for each cell is of the type: {'type':<'game' or 'aggregate'>, 'value':<[array of 1 or two elements]>}
-        
         //Add scores as title property to appear on hover
-
         //Populate cells (do one type of cell at a time )
-
         //Create diagrams in the goals column
-
         //Set the color of all games that tied to light gray
 
+        
     };
 
     /**
