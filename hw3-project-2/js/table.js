@@ -43,9 +43,6 @@ class Table {
         /**For aggregate columns  Use colors '#ece2f0', '#016450' for the range.*/
         this.aggregateColorScale = null; 
 
-        /**For goal Column. Use colors '#cb181d', '#034e7b'  for the range.*/
-        this.goalColorScale = null;
-
         this.table = d3.select('#matchTable > tbody');
     }
 
@@ -101,13 +98,13 @@ class Table {
         //Create diagrams in the goals column
         //Set the color of all games that tied to light gray
 
-        var width = 130
+        var width = 150
         var height = 20
         var max_wins = d3.max(this.teamData, d => d.value.Wins) + 1;
         var max_losses = d3.max(this.teamData, d => d.value.Losses) + 1;
         var max_total_games = d3.max(this.teamData, d => d.value.TotalGames) + 1;
         var max = d3.max([max_wins, max_losses, max_total_games]);
-
+        
         // remove old rows
         var rows = this.table.selectAll("tr")
         rows.remove()
@@ -128,39 +125,66 @@ class Table {
                 { type: row.value.type, value: [row.key], vis: "text" },
                 { type: row.value.type, value: [+row.value["Goals Made"], +row.value["Goals Conceded"]], vis: 'goals' },
                 { type: row.value.type, value: [row.value.Result.label], vis: "text" },
-                { type: row.value.type, value: [row.value.Wins], vis: 'wins' },
-                { type: row.value.type, value: [row.value.Losses], vis: 'loses' },
-                { type: row.value.type, value: [row.value.TotalGames], vis: 'total_games' },
+                { type: row.value.type, value: [row.value.Wins], vis: "chart" },
+                { type: row.value.type, value: [row.value.Losses], vis: "chart" },
+                { type: row.value.type, value: [row.value.TotalGames], vis: "chart" },
              ])
             .enter()
             .append("td")
             .text(function(d){ return d.vis == "text" ? d.value : "" })
-            .attr("class", function(d){ return d.type == 'game' ? "game" : "" });
+            .attr("class", function(d){ return d.type == 'game' ? "game" : "" })
 
+        var g = cells.filter(d => d.vis != "text")
+            .append("svg")
+            .attr("width", d => d.vis == "chart" ? 70 : 150)
+            .attr("height", height)
+            .append("g")
+
+        // bar charts: wins, losses, total game
         var color_scale = d3.scaleLinear()
             .domain([1, max])
             .interpolate(d3.interpolateHcl)
             .range([d3.rgb("#ece2f0"), d3.rgb('#016450')]);
-        
-        var g = cells
-            .filter(d => d.vis != "text" && d.vis != "goals")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .append("g")
 
-        g.append("rect")
-            .attr("width", function(d){ return width / (max - 1) * d.value[0] })
+        var charts = g.filter(d => d.vis != "goals")
+        charts.append("rect")
+            .attr("width", function(d){ return 70 / (max - 1) * d.value[0] })
             .attr("height", height)
             .attr("fill", d => color_scale(d.value[0]))
-      
-        g.append("text")
-            .attr('x', function (d) { return width / (max - 1) * d.value[0] - 4; })
-            .attr('y', 13)
-            .attr('font-size', 12)
-            .attr('text-anchor', 'end')
+        charts.append("text")
+            .attr("x", function (d) { return 70 / (max - 1) * d.value[0] - 4; })
+            .attr("y", 13)
+            .attr("font-size", 12)
+            .attr("text-anchor", "end")
             .attr("fill", "white")
-            .text(d => d.value[0])        
+            .text(d => d.value[0])
+
+        // goals
+        var trash = g.filter(d => d.vis == "goals" && d.value[0] != d.value[1])
+            .attr("class", d => d.type)
+        
+        trash.append("rect")
+            .attr("class", d => d.value[0] < d.value[1] ? "negative" : "positive")
+            .attr("width", d => {
+                let max_min = d3.extent(d.value);
+                return this.goalScale(max_min[1] - max_min[0]);
+            })
+            .attr("x", d => d.type == "game" ? this.goalScale(d3.min(d.value)) + 2 : this.goalScale(d3.min(d.value)) + 6)
+
+        trash.append("circle")
+            .attr("class", d => d3.max(d.value) == d.value[0] ? "negative" : "positive")
+            .attr('cx', d => this.goalScale(d3.min(d.value)) + 6)
+
+        trash.append("circle")
+            .attr("class", d => d3.max(d.value) == d.value[1] ? "negative" : "positive")
+            .attr('cx', d => d.type == 'game' ? this.goalScale(d3.max(d.value)) + 3.5 : this.goalScale(d3.max(d.value)) + 5)
+
+        // grey trash
+        g.filter(d => d.vis == "goals" && +d.value[0] == +d.value[1])
+            .attr("class", d => d.type)
+            .append("circle")
+            .attr("class", "draw")
+            .attr("cx", d => this.goalScale(d3.min(d.value)) + 3)
     };
 
     /**

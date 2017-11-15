@@ -152,4 +152,64 @@ header {
     float: left;
 }
 
+.aggregate rect {
+    height: 11px;
+    y: 5.5;
+}
 
+rect.positive {
+    fill: #6593b0;
+}
+
+rect.negative {
+    fill: #e27274;
+}
+
+.aggregate circle {
+    r: 6;
+    cy: 11;
+}
+
+circle.positive  {
+    fill: #034e7b;
+}
+
+circle.negative {
+    fill: #cb181d;
+}
+
+circle.draw {
+    fill: gray;
+}
+
+rect.positive {
+    fill: #6593b0;
+}
+
+rect.negative {
+    fill: #e27274;
+}
+
+.game rect {
+    y: 9;
+}
+
+.game circle {
+    r: 4;
+    cy: 11;
+}
+
+.game circle.draw {
+    stroke: gray;
+    stroke-width: 2px;
+}
+
+.game circle.positive  {
+    stroke: #034e7b;
+    stroke-width: 2px;
+}
+
+.game circle.negative {
+    stroke: #cb181d;
+    stroke-width: 2px;
+}
