@@ -152,9 +152,14 @@ header {
     float: left;
 }
 
-.aggregate rect {
+.aggregate rect.positive, .aggregate rect.negative {
     height: 11px;
     y: 5.5;
+}
+
+td.title {
+    border-left: 0;
+    color: #317f19;
 }
 
 rect.positive {
@@ -170,33 +175,30 @@ rect.negative {
     cy: 11;
 }
 
-circle.positive  {
+.aggregate circle.positive  {
     fill: #034e7b;
 }
 
-circle.negative {
+.aggregate circle.negative {
     fill: #cb181d;
 }
 
-circle.draw {
+.aggregate circle.draw {
     fill: gray;
 }
 
-rect.positive {
-    fill: #6593b0;
-}
-
-rect.negative {
-    fill: #e27274;
-}
-
 .game rect {
+    height: 4px;
     y: 9;
 }
 
 .game circle {
     r: 4;
     cy: 11;
+}
+
+.game circle {
+    fill: #f0f0f0;
 }
 
 .game circle.draw {

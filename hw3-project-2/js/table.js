@@ -108,21 +108,36 @@ class Table {
         // remove old rows
         var rows = this.table.selectAll("tr")
         rows.remove()
-
+        rows = this.table.selectAll("tr")
+        
         // add rows
         rows = rows
-            .data(this.tableElements, d => d)
+            .data(this.tableElements, d => d.value.type == "game" ? d.unique : d.key)
             .enter()
             .append("tr")
-            .attr('title', function(d) {
-                var total_score = d.value.Wins * 3 + (d.value.TotalGames - d.value.Wins - d.value.Losses) * 1;
-                return "Total Score: " + total_score;
+            .attr("title", function(d) {
+                if (d.value.type != "game") {
+                    var total_score = d.value.Wins * 3 + (d.value.TotalGames - d.value.Wins - d.value.Losses) * 1;
+                    return "Total Score: " + total_score;
+                }
             })
-
+            .attr("class", d => d.value.type)
+            .on("click", (d) => {
+                if (d.value.type == "aggregate") {
+                    for (var i = 0; i < this.tableElements.length; ++i) {
+                        var elem = this.tableElements[i]
+                        if (d.key === elem.key) {
+                            this.updateList(i);
+                            this.selected = d.key;
+                        }
+                    }
+                }
+            })
+        
         // add cells
         var cells = rows.selectAll("td")
              .data(row => [
-                { type: row.value.type, value: [row.key], vis: "text" },
+                { type: row.value.type, value: [row.key], vis: "title" },
                 { type: row.value.type, value: [+row.value["Goals Made"], +row.value["Goals Conceded"]], vis: 'goals' },
                 { type: row.value.type, value: [row.value.Result.label], vis: "text" },
                 { type: row.value.type, value: [row.value.Wins], vis: "chart" },
@@ -131,10 +146,16 @@ class Table {
              ])
             .enter()
             .append("td")
-            .text(function(d){ return d.vis == "text" ? d.value : "" })
-            .attr("class", function(d){ return d.type == 'game' ? "game" : "" })
+            .text(function(d){ return d.vis == "text" || d.vis == "title" ? d.value : "" })
+            .attr("class", function(d){
+                if (d.type == "game") {
+                    return "game"
+                } else if (d.vis == "title") {
+                    return "title"
+                }
+            })
 
-        var g = cells.filter(d => d.vis != "text")
+        var g = cells.filter(d => d.vis != "text" && d.vis != "title")
             .append("svg")
             .attr("width", d => d.vis == "chart" ? 70 : 150)
             .attr("height", height)
@@ -146,7 +167,7 @@ class Table {
             .interpolate(d3.interpolateHcl)
             .range([d3.rgb("#ece2f0"), d3.rgb('#016450')]);
 
-        var charts = g.filter(d => d.vis != "goals")
+        var charts = g.filter(d => (d.vis != "goals" && d.type == "aggregate"))
         charts.append("rect")
             .attr("width", function(d){ return 70 / (max - 1) * d.value[0] })
             .attr("height", height)
@@ -193,19 +214,43 @@ class Table {
      */
     updateList(i) {
         // ******* TODO: PART IV *******
-       
         //Only update list for aggregate clicks, not game clicks
+        var sub = this.collapseList(i)
+        i = i - sub;
+
+        let data = this.tableElements[i];
         
+        let games = data.value.games.map(g => {
+            return { key: 'x' + g.key, value: g.value, unique: g.key + "-" + data.key };
+        })
+
+        games.unshift(0);
+        games.unshift(i + 1);
+
+        this.tableElements.splice.apply(this.tableElements, games);
+        this.updateTable();
+
     }
 
     /**
      * Collapses all expanded countries, leaving only rows for aggregate values per country.
      *
      */
-    collapseList() {
-        
+    collapseList(j) {
         // ******* TODO: PART IV *******
+        var sub = 0;
+        for (let i = 0; i < this.tableElements.length; i++) {
+            let game = this.tableElements[i];
 
+            if (game.value.type == "game") {
+                this.tableElements.splice(i, 1);
+                i--;
+                if (i < j) {
+                    sub++;
+                }
+            }
+        }
+        return sub;
     }
 
 
