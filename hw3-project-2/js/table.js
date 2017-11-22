@@ -81,6 +81,52 @@ class Table {
             .attr("width", width)
             .attr("height", height)
             .call(x_axis)
+        
+        d3.select("#team_sort")
+            .on("click", d => {
+                this.collapseList();
+                this.sort = (this.sort == "team_up" ? "team_down" : "team_up");
+                this.tableElements = this.tableElements.sort((a, b) => {
+                    return (this.sort === "team_up") ? d3.ascending(a.key,b.key) : d3.descending(a.key, b.key);
+                })
+                this.updateTable();
+            })
+        d3.select("#goals_sort")
+            .on("click", d => {
+                this.collapseList();
+                this.sort = (this.sort == "goals_up" ? "goals_down" : "goals_up");
+                this.tableElements = this.tableElements.sort((a, b) => {
+                    return (this.sort === "goals_up") ? d3.ascending( +a.value["Goals Made"], +b.value["Goals Made"] ) : d3.descending( +a.value["Goals Made"], +b.value["Goals Made"]);
+                })
+                this.updateTable();
+            });
+        d3.select("#wins_sort")
+            .on('click', d => {
+                this.collapseList();
+                this.sort = (this.sort == "win_up" ? "win_down" : "win_up")
+                this.tableElements = this.tableElements.sort((a, b) => {
+                    return this.sort === "win_up" ?  d3.ascending( a.value["Wins"], b.value["Wins"]) :  d3.descending( a.value["Wins"], b.value["Wins"]);
+                })
+                this.updateTable();
+            });
+        d3.select("#losses_sort")
+            .on("click", d => {
+                this.collapseList();
+                this.sort = (this.sort == "losses_up" ? "losses_down" : "losses_up")
+                this.tableElements = this.tableElements.sort((a, b) => {
+                    return this.sort === "losses_up" ?  d3.ascending( a.value["Losses"], b.value["Losses"]) :  d3.descending( a.value["Losses"], b.value["Losses"]);
+                })
+                this.updateTable();
+            });
+        d3.select("#total_sort")
+            .on("click", d => {
+                this.collapseList();
+                this.sort = (this.sort == "sort_up" ? "sort_down" : "sort_up")
+                this.tableElements = this.tableElements.sort((a, b) => {
+                    return this.sort === "sort_up" ?  d3.ascending( a.value["TotalGames"], b.value["TotalGames"]) :  d3.descending( a.value["TotalGames"], b.value["TotalGames"]);
+                })
+                this.updateTable();
+            });
     }
 
 
