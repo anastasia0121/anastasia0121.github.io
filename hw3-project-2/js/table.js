@@ -169,12 +169,16 @@ class Table {
             })
             .attr("class", d => d.value.type)
             .on("click", (d) => {
+                if (d.value.type == "game") {
+                    this.tree.updateTree(d);
+                }
                 if (d.value.type == "aggregate") {
                     for (var i = 0; i < this.tableElements.length; ++i) {
                         var elem = this.tableElements[i]
                         if (d.key === elem.key) {
                             this.updateList(i);
                             this.selected = d.key;
+                            this.tree.updateTree(d);
                         }
                     }
                 }
@@ -195,6 +199,8 @@ class Table {
             .text(function(d){ return d.vis == "text" || d.vis == "title" ? d.value : "" })
             .attr("class", function(d){
                 if (d.type == "game") {
+                    if (d.vis == "title")
+                        return "title_game game"
                     return "game"
                 } else if (d.vis == "title") {
                     return "title"
@@ -243,15 +249,15 @@ class Table {
             .attr('cx', d => this.goalScale(d3.min(d.value)) + 6)
 
         trash.append("circle")
-            .attr("class", d => d3.max(d.value) == d.value[1] ? "negative" : "positive")
-            .attr('cx', d => d.type == 'game' ? this.goalScale(d3.max(d.value)) + 3.5 : this.goalScale(d3.max(d.value)) + 5)
+            .attr("class", d => d3.max(d.value) == d.value[1] ? "negative " : "positive")
+            .attr('cx', d => this.goalScale(d3.max(d.value)) + 5)
 
         // grey trash
         g.filter(d => d.vis == "goals" && +d.value[0] == +d.value[1])
             .attr("class", d => d.type)
             .append("circle")
             .attr("class", "draw")
-            .attr("cx", d => this.goalScale(d3.min(d.value)) + 3)
+            .attr("cx", d => this.goalScale(d3.min(d.value)) + 5)
     };
 
     /**

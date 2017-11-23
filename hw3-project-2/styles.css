@@ -162,6 +162,10 @@ td.title {
     color: #317f19;
 }
 
+td.title_game {
+    border-left: 0;
+}
+
 rect.positive {
     fill: #6593b0;
 }
