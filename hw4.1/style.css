@@ -1,0 +1,9 @@
+.node circle {
+  fill: white;
+  stroke: #000;
+  stroke-width: .9px;
+}
+
+.node:hover {
+  fill: black;
+}
