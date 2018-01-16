@@ -9,10 +9,42 @@
     <script src="graph2.js" async></script>
 </head>
 <body>
-<select id="sw">
-  <option value="gdp">GDP</option>
-  <option value="population" selected>Population</option>
-</select>
+
+ <form>
+  Layouts:
+  </br>
+  <label><input type="radio" name="layout" value="list" checked> List - no scale</label>
+  </br>
+  <label><input type="radio" name="layout" value="line"> Line - scaled</label>
+  <select id="sw">
+	<option value="gdp">GDP</option>
+	<option value="population" selected>Population</option>
+  </select>
+  </br>
+  <label><input type="radio" name="layout" value="scatter" > Scatter </label>
+  <select id="sw1">
+	<option value="gdp" selected>GDP/Population</option>
+	<option value="latitude">Latitude/Longitude</option>
+  </select>
+  </br>
+  <label><input type="radio" name="layout" value="circular"> Circular</label>
+  <select id="sw2">
+	<option value="gdp">GDP</option>
+	<option value="population" selected>Population</option>
+  </select>
+  </br>
+  <label><input type="radio" name="layout" value="forse"> Forse</label>
+   </br>
+  <label><input type="radio" name="layout" value="group"> Groupe</label>
+  </br>
+  <label><input type="radio" name="layout" value="force_circular_gruped"> Force circular group</label>
+  </br>
+  <label><input type="radio" name="layout" value="circular_gruped"> Circular group</label>
+  <select id="sw3">
+	<option value="gdp">GDP</option>
+	<option value="population" selected>Population</option>
+  </select>
+  </form>
 <br>
 </body>
 </html>

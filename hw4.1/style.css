@@ -4,6 +4,11 @@
   stroke-width: .9px;
 }
 
-.node:hover {
+.node:hover circle{
   fill: black;
+}
+
+.node:hover,
+.node--colored {
+	font-weight: 700;
 }
